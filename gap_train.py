@@ -32,13 +32,13 @@ from keras.layers import *
 input_tensor = Input(X_train.shape[1:])
 x = input_tensor
 x = Dropout(0.5)(x)
+# x = Dense(1, activation='sigmoid')(x)
 x = Dense(1, activation='sigmoid')(x)
 model = Model(input_tensor, x)
 
 model.compile(optimizer='adadelta',
               loss='binary_crossentropy',
               metrics=['accuracy'])
-
 
 # In[8]:
 
@@ -50,7 +50,7 @@ SVG(model_to_dot(model, show_shapes=True).create(prog='dot', format='svg'))
 
 # In[4]:
 
-model.fit(X_train, y_train, batch_size=128, nb_epoch=8, validation_split=0.2)
+model.fit(X_train, y_train, batch_size=128, nb_epoch=20, validation_split=0.2)
 
 
 # In[5]:
@@ -78,10 +78,16 @@ gen = ImageDataGenerator()
 test_generator = gen.flow_from_directory("test-small-dataset", image_size, shuffle=False,
                                          batch_size=16, class_mode=None)
 
+test_generator.filenames.sort()
 for i, fname in enumerate(test_generator.filenames):
-    index = int(fname[fname.rfind('/')+1:fname.rfind('.')])
-    df.set_value(index-1, 'label', y_pred[i])
+    index = fname[fname.rfind('/')+1:fname.rfind('.')]
+    print("image %s:\t%f" % (fname, y_pred[i]))
 
+# for i, fname in enumerate(test_generator.filenames):
+#     index = int(fname[fname.rfind('/')+1:fname.rfind('.')])
+#     df.set_value(index-1, 'label', y_pred[i])
+#     if index < 100:
+#         print("image %s:\t%f" % (fname, y_pred[i]))
 df.to_csv('pred.csv', index=None)
 df.head(10)
 

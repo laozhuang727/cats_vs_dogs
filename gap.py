@@ -1,4 +1,3 @@
-
 # coding: utf-8
 
 # In[1]:
@@ -30,15 +29,9 @@ def write_gap(MODEL, image_size, lambda_func=None):
     test_generator = gen.flow_from_directory("test-small-dataset", image_size, shuffle=False,
                                              batch_size=16, class_mode=None)
 
-    # train = model.predict_generator(train_generator, train_generator.nb_sample)
-    # test = model.predict_generator(test_generator, test_generator.nb_sample)
-    # steps = total image/ batch_size=16 ===> 25000 /16
-
-    train = model.predict_generator(train_generator
-                                    , train_generator.samples/train_generator.batch_size)
+    train = model.predict_generator(train_generator, train_generator.samples/16)
     test = model.predict_generator(test_generator, test_generator.samples)
-
-    with h5py.File("gap_%s.h5" % MODEL.__name__, mode='w') as h:
+    with h5py.File("gap_%s.h5"%MODEL.__name__, mode='w') as h:
         print("create gap dataset for %s\n\n" % MODEL.__name__)
         h.create_dataset("train", data=train)
         h.create_dataset("test", data=test)
@@ -53,23 +46,19 @@ write_gap(ResNet50, (224, 224))
 
 write_gap(Xception, (299, 299), xception.preprocess_input)
 
-
 # In[5]:
 
 write_gap(InceptionV3, (299, 299), inception_v3.preprocess_input)
 
-
 # In[7]:
 
-write_gap(VGG16, (224, 224))
+# write_gap(VGG16, (224, 224))
 
 
 # In[8]:
 
-write_gap(VGG19, (224, 224))
+# write_gap(VGG19, (224, 224))
 
 
 # In[ ]:
 gc.collect()
-
-

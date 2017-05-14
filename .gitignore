@@ -2,7 +2,10 @@ train*
 test*
 *.h5
 *.zip
+*.jpg
+*.jpeg
 *.png
 .ipy*
 .idea/
 .~lock.pred.csv#
+

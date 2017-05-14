@@ -9,11 +9,13 @@ import shutil
 SMALL_DATASET_COUNT = 100
 
 train_filenames = os.listdir('train')
+train_filenames.sort()
 train_cat = filter(lambda x: x[:3] == 'cat', train_filenames)
 train_dog = filter(lambda x: x[:3] == 'dog', train_filenames)
 
-test_file_dir = os.listdir('test')
-test_filenames = filter(lambda x: int(x[:-4]) <= SMALL_DATASET_COUNT, test_file_dir)
+test_filenames = os.listdir('test')
+test_filenames.sort()
+# test_filenames = filter(lambda x: int(x[:-4]) <= SMALL_DATASET_COUNT, test_file_dir)
 
 
 # In[3]:
