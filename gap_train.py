@@ -9,6 +9,8 @@ from sklearn.utils import shuffle
 import gc
 np.random.seed(2017)
 
+
+# == Step1 ==：模型合并
 X_train = []
 X_test = []
 
@@ -25,6 +27,7 @@ X_train, y_train = shuffle(X_train, y_train)
 
 
 # In[6]:
+# == Step2 ==：添加最后一层，做我们自己的2分类模型
 
 from keras.models import *
 from keras.layers import *
@@ -41,6 +44,7 @@ model.compile(optimizer='adadelta',
               metrics=['accuracy'])
 
 # In[8]:
+# == Step3==：模型可视化
 
 from IPython.display import SVG
 from keras.utils.vis_utils import model_to_dot
@@ -59,6 +63,7 @@ model.save('model.h5')
 
 
 # In[6]:
+# == Step4 ==：预测测试集
 
 y_pred = model.predict(X_test, verbose=1)
 y_pred = y_pred.clip(min=0.005, max=0.995)
